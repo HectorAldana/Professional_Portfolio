@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     projects.forEach(project => {
         const projectElement = document.createElement('div');
         projectElement.classList.add('project-item');
-        projectElement.innerHTML = `<h3>${project.name}</h3><p>${project.description}</p>`;
+        projectElement.innerHTML = `<h3>${project.name}</h3><p class="project-description">${project.description}</p>`;
         projectsContainer.appendChild(projectElement);
 
         projectElement.addEventListener('click', () => {

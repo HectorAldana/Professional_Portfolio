@@ -54,6 +54,11 @@ section {
     align-items: stretch;
 }
 
+.project-description {
+    text-align: center; /* Centers the text */
+    font-size: 0.9em; /* Smaller font size; adjust as needed */
+}
+
 .project-item {
     width: calc(33.33% - 20px);
     margin: 10px;
