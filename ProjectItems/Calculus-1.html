@@ -34,6 +34,24 @@
             <p>For a pixel at \((3, 4)\) rotated by \(45^\circ\), the new coordinates \((x', y')\) are calculated as follows:</p>
             <img src="../Images/rotation_calculation.png" alt="Rotation Calculation" style="display: block; margin-left: auto; margin-right: auto;">
             <p>Thus, the new coordinates of the pixel after rotation by \(45^\circ\) are approximately \((-1/\sqrt{2}, 7/\sqrt{2})\). This example demonstrates the practical application of the rotation matrix to a single pixel, which can be extended to every pixel in an image for a complete rotation transformation.</p>
+            <h4>Intersecting Example and Theory:</h4>
+            <p>Rotation is a linear transformation of space from \( \mathbb{R}^2 \) to \( \mathbb{R}^2 \). In mathematical terms, a rotation operation takes a two-dimensional vector as input and outputs another two-dimensional vector, adhering to the principles of linear transformations. We convert \((x, y)\)  to \((x', y')\).</p>
+            <ul>
+               <li><strong>Rotation in \( \mathbb{R}^2 \):</strong> When we rotate a vector in a two-dimensional space (e.g., the plane of a computer screen or a piece of paper), we are essentially moving it around a fixed point (usually the origin) without changing its length. We can describe the rotation by an angle \( \theta \), and the transformation changes the vector's direction while keeping its magnitude constant.</li>
+               <li>
+                  <strong>Linear Transformation Properties:</strong>
+                  <ul>
+                     <li><em>Additivity:</em> For any two vectors \( \mathbf{v} \) and \( \mathbf{w} \) in \( \mathbb{R}^2 \), the rotation of their sum is equal to the sum of their rotations. Mathematically, if \( R \) is a rotation operation, then \( R(\mathbf{v} + \mathbf{w}) = R(\mathbf{v}) + R(\mathbf{w}) \).</li>
+                     <li><em>Homogeneity:</em> For any vector \( \mathbf{v} \) in \( \mathbb{R}^2 \) and any scalar \( a \), the rotation of the scaled vector is the same as scaling the rotated vector. In other words, \( R(a\mathbf{v}) = aR(\mathbf{v}) \).</li>
+                  </ul>
+               </li>
+               <li>
+                  <strong>Matrix Representation:</strong>
+                  <p>Rotation in \( \mathbb{R}^2 \) can be represented by a 2x2 matrix (as discussed in the previous explanation about cosine and sine in the rotation matrix). This matrix operates on 2D vectors; the resulting vectors are also in 2D space.</p>
+               </li>
+               <li><strong>Preservation of Structure:</strong> Importantly, rotation preserves the linear structure of the space. Distances and angles between vectors (except for the rotation angle) are maintained, a characteristic of linear transformations.</li>
+            </ul>
+            <p>Thus, rotation is indeed a linear transformation in \( \mathbb{R}^2 \) space, as it maps vectors from \( \mathbb{R}^2 \) to \( \mathbb{R}^2 \) while preserving linearity.</p>
             <h3>Python Code Implementation:</h3>
             <pre class="code-block"><code>
 <span class="keyword">import</span> cv2
@@ -118,7 +136,7 @@ print("Current Working Directory: ", os.getcwd())
             <h3>Results and Discussion</h3>
             <h4>Findings:</h4>
             <h5>Image quality and angle of rotation:</h5>
-            <p>The manual application of the rotation matrix effectively rotates the images, confirming the matrix's capability in transforming pixel positions. Nonetheless, rotating an image involves mapping pixels from the original image to new positions in the rotated image. If the rotation angle is not a multiple of 90 degrees, most pixels in the rotated image will not align exactly with pixels in the original image. Interpolation is used to estimate pixel values based on surrounding pixels, which can cause a slight blur or loss of sharpness. Try 45 degrees counterclockwise first. Then try 90 degrees and notice the loss in image quality.</p>
+            <p>The manual application of the rotation matrix effectively rotates the images, confirming the matrix's capability in transforming pixel positions. Nonetheless, rotating an image involves mapping pixels from the original image to new positions in the rotated image. If the rotation angle is not a multiple of 90 degrees, most pixels in the rotated image will not align exactly with pixels in the original image. Try 45 degrees counterclockwise first. Then try 90 degrees and notice the loss in image quality.</p>
             <h5>Clipped image:</h5>
             <p>The code can be enhanced by calculating the new image size</p>
             <pre class="code-block"><code>            
@@ -147,6 +165,48 @@ print("Current Working Directory: ", os.getcwd())
             <h3>Conclusion</h3>
             <h4>Summary:</h4>
             <p>This project effectively bridges the gap between theoretical mathematics and practical computer vision applications, illustrating the significance of linear transformation theory in real-world scenarios. By manually implementing the rotation matrix on grayscale images, it emphasizes the foundational role of mathematics in image processing and highlights the comparative simplicity of grayscale transformations over color image processing.</p>
+            <h4>Next steps:</h4>
+            <p>We can use libraries like NumPy for matrix operations and OpenCV to achieve the linear transformation without deep diving into the mathematics. Below is a code example. What makes their libraries tick? </p>
+            <pre class="code-block"><code>
+<span class="keyword">import</span> cv2
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+
+def rotate_image(image_path, angle):
+    <span class="comment"># Load the image</span>
+    image = cv2.imread(image_path)
+
+    <span class="comment"># Get the image dimensions</span>
+    height, width = image.shape[:2]
+
+    <span class="comment"># Calculate the center of the image</span>
+    center = (width / 2, height / 2)
+
+    <span class="comment"># Calculate the rotation matrix</span>
+    <span class="comment"># cv2.getRotationMatrix2D needs center, angle, scale</span>
+    rotation_matrix = cv2.getRotationMatrix2D(center, angle, 1)
+
+    <span class="comment"># Perform the rotation</span>
+    rotated_image = cv2.warpAffine(image, rotation_matrix, (width, height))
+
+    <span class="comment"># Display the original and rotated images</span>
+    cv2.imshow('Original Image', image)
+    cv2.imshow('Rotated Image', rotated_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+<span class="comment"># Use the function</span>
+rotate_image('path_to_your_image.jpg', 45)  # Replace 'path_to_your_image.jpg' with your image file path
+
+</code></pre>
+            <div class="image-container">
+               <img src="../ProjectSourceCode/Calculus-1/OpenCV-45.png" alt="OpenCV&Numpy -45 degress" class="image">
+               <img src="../ProjectSourceCode/Calculus-1/OpenCV-90.png" alt="OpenCV&Numpy -90 degress" class="image">
+            </div>
+            <p>We completed a manual rotation and showed the OpenCV-based rotation code. The manual rotation outcome showed less quality than the OpenCV-based rotation, primarily because of pixel interpolation issues.</p>
+            <p>Our manual rotation code assigns pixel values directly without interpolating. This approach leads to aliasing and jagged edges. On the other hand, OpenCV's warpAffine uses sophisticated interpolation methods (e.g., bilinear or bicubic interpolation) to calculate pixel values, resulting in smoother and more visually appealing images.</p>
+            <p>The manual method assigns new pixel values based on the original image's coordinates transformed by the rotation matrix. That leads to issues like holes (pixels in the new image that are not assigned a value) or overlaps (multiple original pixels mapping to the same new pixel). </p>
+            <p>We saw that the way we calculate the new image size to accommodate the rotated image determines whether the image is clipped or shows unnecessary padding. OpenCV does a graceful job here, with highly optimized functions for performance and considering speed and memory usage. They are written in optimized C/C++ and often use hardware acceleration, making them more efficient than manually written code in Python. </p>
+            <p>C/C++ is a lower-level programming language and offers more control over system resources like memory and processing power. Moreover, OpenCV's C/C++ functions may take advantage of optimization techniques like loop unrolling, efficient use of data structures, and minimal use of redundant computations. Achieving similar results with Python alone poses a good challenge.</p>
             <h3>References</h3>
             <p>Lay, D. C. (2021). Linear Algebra and Its Applications (6th ed., p. 76, Section 1.9 The Matrix of a Linear Transformation). Pearson. ISBN-13: 978-0-13-585104-3.</p>
             <p>Kreyszig, E. (2011). Advanced engineering mathematics (10th ed., pp. 271-272). John Wiley & Sons.</p>
