@@ -47,7 +47,7 @@
     height, width = image.shape
 
     <span class="comment"># Create a new image with the same size but filled with zeros (black)</span>
-    rotated_image = np.zeros((height, width), np.uint8)
+    rotated_image = np.zeros((height, width), dtype=np.uint8)
 
     <span class="comment"># Calculate the center of the image</span>
     center_y, center_x = height <span class="keyword">//</span> 2, width <span class="keyword">//</span> 2
@@ -84,12 +84,40 @@
     cv2.destroyAllWindows()
 
 <span class="comment"># Use the function</span>
-rotate_image_manual('path_to_your_image.jpg', 45)  <span class="comment"># Replace with your image path and desired rotation angle</span>
+rotate_image_manual('path_to_your_image.jpg', -45)  <span class="comment"># Replace with your image path and desired rotation angle</span>
 </code></pre>
 
+<div class="image-container">
+        <img src="../ProjectSourceCode/Calculus-1/Sheep.jpg" alt="Sheep" class="image">
+        <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale.png" alt="Sheep in Grayscale" class="image">
+        <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale-counterclockwise-45degrees.png" alt="Sheep Rotated 45 Degrees Counterclockwise" class="image">
+</div>
+<p><a href="../ProjectSourceCode/Calculus-1/Linear_Transformation_2D_Rotation.py" download="Linear_Transformation_2D_Rotation.py">Download Python Source Code...</a></p>
+<p><a href="../ProjectSourceCode/Calculus-1/Sheep.jpg" download="Sheep.jpg">Download test image...</a></p>
 
+<h3>Troubleshooting </h3>
+<h4>Version issue:</h4>
+<p>TypeError: 'numpy._DTypeMeta' object is not subscriptable</p>
+<p>Solution: In Anaconda.Navigator Terminal for Jupyter.Notebook, run the following command: </p>
+<pre class="code-block"><code>            
+pip install numpy --upgrade
+</code></pre>
 
+<h4>File path issue:</h4>
+<p>Solution: In Jupyter.Notebook, run the following command: </p>
+<pre class="code-block"><code>            
+import os
 
+<span class="comment"># Define the desired directory path</span>
+new_directory = r"C:\path_to_your_image"
+
+<span class="comment"># Change the current working directory</span>
+os.chdir(new_directory)
+
+<span class="comment"># Verify the change</span>
+print("Current Working Directory: ", os.getcwd())
+
+</code></pre>
 
 
             <h3>Results and Discussion</h3>

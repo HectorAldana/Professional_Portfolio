@@ -8,7 +8,7 @@ def rotate_image_manual(image_path, angle):
     height, width = image.shape
 
     # Create a new image with the same size but filled with zeros (black)
-    rotated_image = np.zeros((height, width), np.uint8)
+    rotated_image = np.zeros((height, width), dtype=np.uint8)
 
     # Calculate the center of the image
     center_y, center_x = height // 2, width // 2
@@ -45,4 +45,4 @@ def rotate_image_manual(image_path, angle):
     cv2.destroyAllWindows()
 
 # Use the function
-rotate_image_manual('path_to_your_image.jpg', 45)  # Replace with your image path and desired rotation angle
+rotate_image_manual('path_to_your_image.jpg', -45)  # Replace with your image path and desired rotation angle

@@ -90,6 +90,21 @@ section {
 
 
 
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image {
+    margin: 10px;
+    /* Optional: set a maximum height or width if the images are too large */
+    max-width: 200px; 
+    max-height: 200px;
+}
+
+
+
 
 /* Code Block Styling */
 .code-block {
