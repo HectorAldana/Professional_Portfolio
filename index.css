@@ -33,6 +33,19 @@ h2 {
 }
 
 
+/* Indent paragraphs following <h3>, up to the next heading */
+h3 ~ p {
+    padding-left: 20px; /* Adjust as needed */
+}
+
+/* Indent paragraphs following <h4>, up to the next heading */
+h4 ~ p {
+    padding-left: 40px; /* Adjust as needed */
+}
+
+
+
+
 section {
     margin: 2em 5%;
     padding: 1em;
@@ -74,6 +87,32 @@ section {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
+
+
+
+
+/* Code Block Styling */
+.code-block {
+    background-color: #282c34; /* Dark background for the code block */
+    color: #abb2bf; /* Light gray text for good contrast */
+    font-family: 'Courier New', Courier, monospace; /* Monospaced font for code */
+    padding: 1em;
+    margin: 1em 0;
+    overflow-x: auto; /* Horizontal scroll for long lines */
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    line-height: 1.5; /* Spacing between lines */
+}
+
+/* Styling for Python keywords, comments, and strings - optional */
+.code-block .keyword { color: #FFBF00; } /* Amber for keywords */
+.code-block .string { color: #98c379; } /* Green for strings */
+.code-block .comment { color: #5c6370; } /* Gray for comments */
+
+
+
+
+
 
 /* Media queries and other styles remain unchanged */
 
