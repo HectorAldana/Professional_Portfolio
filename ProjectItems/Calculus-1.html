@@ -90,7 +90,8 @@ rotate_image_manual('path_to_your_image.jpg', -45)  <span class="comment"># Repl
 <div class="image-container">
         <img src="../ProjectSourceCode/Calculus-1/Sheep.jpg" alt="Sheep" class="image">
         <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale.png" alt="Sheep in Grayscale" class="image">
-        <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale-counterclockwise-45degrees.png" alt="Sheep Rotated 45 Degrees Counterclockwise" class="image">
+        <img src="../ProjectSourceCode/Calculus-1/Sheep-clipped.png" alt="Sheep clipped" class="image">
+        <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale-counterclockwise-90degrees.png" alt="Sheep Rotated 45 Degrees Counterclockwise" class="image">
 </div>
 <p><a href="../ProjectSourceCode/Calculus-1/Linear_Transformation_2D_Rotation.py" download="Linear_Transformation_2D_Rotation.py">Download Python Source Code...</a></p>
 <p><a href="../ProjectSourceCode/Calculus-1/Sheep.jpg" download="Sheep.jpg">Download test image...</a></p>
@@ -122,7 +123,29 @@ print("Current Working Directory: ", os.getcwd())
 
             <h3>Results and Discussion</h3>
             <h4>Findings:</h4>
-            <p>The manual application of the rotation matrix effectively rotates the images, confirming the matrix's capability in transforming pixel positions.</p>
+            <h5>Image quality and angle of rotation:</h5>
+            <p>The manual application of the rotation matrix effectively rotates the images, confirming the matrix's capability in transforming pixel positions. Nonetheless, rotating an image involves mapping pixels from the original image to new positions in the rotated image. If the rotation angle is not a multiple of 90 degrees, most pixels in the rotated image will not align exactly with pixels in the original image. Interpolation is used to estimate pixel values based on surrounding pixels, which can cause a slight blur or loss of sharpness. Try 45 degrees counterclockwise first. Then try 90 degrees and notice the loss in image quality.</p>
+            <h5>Clipped image:</h5>
+            <p>The code can be enhanced by calculating the new image size</p>
+<pre class="code-block"><code>            
+    <span class="comment"># Calculate new image width and height</span>
+    new_width = int(abs(width * math.cos(angle_rad)) + abs(height * math.sin(angle_rad)))
+    new_height = int(abs(height * math.cos(angle_rad)) + abs(width * math.sin(angle_rad)))
+
+    <span class="comment"># Create a new image with the calculated size</span>
+    rotated_image = np.zeros((new_height, new_width), dtype=np.uint8)
+
+    <span class="comment"># Calculate the center of the new image</span>
+    center_y, center_x = new_height // 2, new_width // 2
+
+</code></pre>
+<div class="image-container">
+        <img src="../ProjectSourceCode/Calculus-1/Sheep.jpg" alt="Sheep" class="image">
+        <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale.png" alt="Sheep in Grayscale" class="image">
+        <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale-counterclockwise-45degrees.png" alt="Sheep Rotated 45 Degrees Counterclockwise" class="image">
+        <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale-counterclockwise-90degrees.png" alt="Sheep Rotated 45 Degrees Counterclockwise" class="image">
+</div>
+
             <h4>Analysis:</h4>
             <p>These results underscore the importance of linear algebra in image processing. The project highlights the balance between theory and practice, demonstrating how abstract mathematical concepts can be directly applied to practical tasks like image rotation. The comparison with OpenCV's methods also sheds light on the complexities of handling color images versus grayscale images in the context of linear transformations.</p>
             <h3>Real-World Application</h3>
