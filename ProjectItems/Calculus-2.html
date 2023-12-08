@@ -16,46 +16,257 @@
       <section id="project">
          <h3>Multivariable Calculus & Complex Analysis</h3>
          <article id="linear-transformation">
-
             <h3>Introduction</h3>
-
             <h4>Objective:</h4>
-            <p>To demonstrate and analyze the process of image rotation as a linear transformation in R2 space, focusing on color imagery.</p>
-
-            <h4>Background:</h4>
-            <p>This project investigates the mathematical concept of linear transformations, particularly rotation in a 2-dimensional space, and its practical application in color image processing.</p>
-
-
+            <p>To demonstrate and analyze the process of image rotation as a linear transformation in R2 space, focusing on color imagery and bilinear interpolation.</p>
             <h3>Concept and Implementation</h3>
-            <h4>Theory:</h4>
-            <p></p>
-            
-
+            <h4>Theory and example:</h4>
+            <p>The project is centered around the rotation matrix, a linear transformation used for rotating vectors in a plane. Defined using sine (\(\sin\)) and cosine (\(\cos\)) functions, the matrix is pivotal for determining new coordinates after rotation, where \(\theta\) is the rotation angle. The simplicity of linear transformations is explored using grayscale images, which are 2D arrays of pixel intensities, in contrast to the more complex approach required for color images with multiple layers.</p>
+            <p><strong>Rotation Matrix Derivation:</strong></p>
+            <p>In the case of a circle of radius \( r \), any point on the circle can be described using the equations:</p>
+            <p>\[ x = r \cos(\alpha) \]</p>
+            <p>\[ y = r \sin(\alpha) \]</p>
+            <p>where \( \alpha \) is the angle from the positive x-axis to the point. After rotating this point by an angle \( \theta \), the new coordinates (\( x' \), \( y' \)) can be expressed using the rotation matrix:</p>
+            <p>\[ x' = x \cos(\theta) - y \sin(\theta) \]</p>
+            <p>\[ y' = x \sin(\theta) + y \cos(\theta) \]</p>
+            <p><strong>Matrix Formulation:</strong></p>
+            <p>The rotation matrix in 2D space for a rotation by an angle \( \theta \) is given by:</p>
+            <p>\[ 
+               \begin{bmatrix}
+               \cos(\theta) & -\sin(\theta) \\
+               \sin(\theta) & \cos(\theta)
+               \end{bmatrix}
+               \]
+            </p>
+            <p><strong>Cosine and Sine in the Matrix:</strong></p>
+            <p>The cosine and sine functions in the rotation matrix correspond to the rotated coordinates on the unit circle. They determine the new x and y coordinates of a point after a rotation transformation:</p>
+            <p>\[ 
+               \begin{bmatrix}
+               \cos(\theta) & -\sin(\theta) \\
+               \sin(\theta) & \cos(\theta)
+               \end{bmatrix}
+               \begin{bmatrix}
+               x \\
+               y
+               \end{bmatrix}
+               =
+               \begin{bmatrix}
+               x' \\
+               y'
+               \end{bmatrix}
+               \]
+            </p>
+            <p>This matrix will rotate a point (\( x, y \)) around the origin by the angle \( \theta \).</p>
+            <p><strong>Rotation of a color image point:</strong></p>
+            <p>Rotation in color imagery is a linear transformation of space from \( \mathbb{R}^2 \) concerning the spatial coordinates of the image. Nonetheless, it is essential to note that while the transformation regarding the image's coordinates is linear, the color information does not factor into the linearity of the spatial transformation.</p>
+            <p>Let's break it down:</p>
+            <p><strong>Spatial Transformation:</strong></p>
+            <p>Any given pixel in an image can represent its location by a 2D vector \( (x, y) \) in \( \mathbb{R}^2 \) space.</p>
+            <p>A rotation operation applies a linear transformation to these 2D vectors, rotating them around a fixed point (usually the image center) without altering their original colors.</p>
+            <p>We can represent the transformation with a 2x2 rotation matrix that only affects the spatial coordinates.</p>
+            <p><strong>Color Channels:</strong></p>
+            <p>A color image has multiple channels (typically three for RGB—red, green, and blue); each channel stores intensity information for its respective color. The intensity is between 0 and 255, where 0 represents no intensity of that color, and 255 represents the total intensity. The linearity of the rotation applies identically to each channel: we rotate the spatial locations of the pixels, but the rotation matrix does not change the intensity values for the colors themselves.</p>
+            <p>Therefore, the color transformation is not part of the linear transformation, as it does not affect the vector space in which the image's spatial coordinates reside. The color data associated with each pixel is preserved and remapped to the new rotated position.</p>
+            <p><strong>Calculation using the rotation matrix:</strong></p>
+            <p>Using a rotation matrix, let's consider a numerical example of rotating a single point in a color image. For simplicity, we will rotate the point by 45 degrees around the origin of the image coordinate system.</p>
+            <p>Suppose we have a point \( P \) with the spatial coordinates \( (x, y) = (2, 3) \) in the image. The color at this point, in the RGB color space, has the color values \( (R, G, B) = (255, 0, 0) \), corresponding to red.</p>
+            <p>First, we need to create the rotation matrix for a 45-degree rotation. The rotation matrix \( R \) for a rotation by an angle \( \theta \) is given by:</p>
+            \[ R(\theta) = \begin{bmatrix} \cos(\theta) & -\sin(\theta) \\ \sin(\theta) & \cos(\theta) \end{bmatrix} \]
+            <p>Converting the angle to radians:</p>
+            \[ \theta = 45^\circ = \frac{\pi}{4} \text{ radians} \]
+            <p>Now, we compute the cosine and sine for \( \frac{\pi}{4} \):</p>
+            \[ \cos\left(\frac{\pi}{4}\right) = \sin\left(\frac{\pi}{4}\right) = \frac{\sqrt{2}}{2} \]
+            <p>So the rotation matrix for a 45-degree rotation is:</p>
+            \[ R\left(\frac{\pi}{4}\right) = \begin{bmatrix} \frac{\sqrt{2}}{2} & -\frac{\sqrt{2}}{2} \\ \frac{\sqrt{2}}{2} & \frac{\sqrt{2}}{2} \end{bmatrix} \]
+            <p>We then apply this rotation matrix to the point \( P \):</p>
+            \[ \begin{bmatrix} x' \\ y' \end{bmatrix} = R\left(\frac{\pi}{4}\right) \cdot \begin{bmatrix} 2 \\ 3 \end{bmatrix} \]
+            <p>The rotated coordinates of point \( P \) are approximately:</p>
+            <p>\( x' \approx -0.707 \)</p>
+            <p>\( y' \approx 3.536 \)</p>
+            <p>The RGB color values at the new position \( (x', y') \) will be the same as the original point \( (x, y) \), which is \( (255, 0, 0) \) because the color information does not change during a spatial transformation.</p>
+            <p>After rotation, the point \( P \) with coordinates \( (2, 3) \) and red color moved to approximately \( (-0.707
+               , 3.536) \) with the same red color.
+            </p>
             <h4>Tools:</h4>
             <p>The project utilizes Python for its powerful library support. OpenCV (cv2) is employed for image processing tasks, though the project specifically focuses on manually applying the rotation matrix to demonstrate the application of linear algebra in image manipulation. This approach offers a deeper understanding of the fundamental processes behind image rotation.</p>
-
             <h4>Process:</h4>
             <p>The implementation involves manually creating a rotation matrix based on a given angle, applying this matrix to each pixel of a color image.</p>
 
-            <h4>Example:</h4>
-            <p></p>
 
-
-            <h3>Python Code Implementation:</h3>
+            <h3>Python Code Implementation without bilinear interpolation:</h3>
             <pre class="code-block"><code>
+
+import cv2
+import numpy as np
+import math
+
+def rotate_image_color(image_path, angle):
+    # Load the color image
+    image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+    height, width = image.shape[:2]
+
+    # Create a new image with the same size but filled with zeros (black background)
+    rotated_image = np.zeros((height, width, 3), np.uint8)
+
+    # Calculate the center of the image
+    center_y, center_x = height // 2, width // 2
+
+    # Convert the angle to radians
+    angle_rad = math.radians(angle)
+
+    # Create the rotation matrix
+    rotation_matrix = np.array([
+        [math.cos(angle_rad), -math.sin(angle_rad)],
+        [math.sin(angle_rad), math.cos(angle_rad)]
+    ])
+
+    # Apply the transformation to each pixel
+    for y in range(height):
+        for x in range(width):
+            # Translate the pixel to origin and then rotate
+            yp = y - center_y
+            xp = x - center_x
+            new_x, new_y = np.matmul(rotation_matrix, np.array([xp, yp]))
+
+            # Translate back from the origin
+            new_x += center_x
+            new_y += center_y
+
+            # If the new position is within the bounds of the image, set the pixel
+            if 0 <= new_x < width and 0 <= new_y < height:
+                rotated_image[int(new_y), int(new_x)] = image[y, x]
+
+    # Display the original and rotated images
+    cv2.imshow('Original Image', image)
+    cv2.imshow('Rotated Image', rotated_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+# Use the function
+rotate_image_color('Sheep.jpg', 45)  # Replace with your image path and desired rotation angle
+
+
             </code></pre>
 
             <div class="image-container">
-               <img src="../ProjectSourceCode/Calculus-1/Sheep.jpg" alt="Sheep" class="image">
+               <img src="../ProjectSourceCode/Calculus-2/SheepColor.jpg" alt="SheepColor" class="image">
             </div>
-            <p><a href="../ProjectSourceCode/Calculus-1/Linear_Transformation_2D_Rotation_color.py" download="Linear_Transformation_2D_Rotation_color.py">Download Python Source Code...</a></p>
-            <p><a href="../ProjectSourceCode/Calculus-1/Sheep.jpg" download="Sheep.jpg">Download test image...</a></p>
+            <p><a href="../ProjectSourceCode/Calculus-2/Linear_Transformation_2D_Rotation_color.py" download="Linear_Transformation_2D_Rotation_color.py">Download Python Source Code...</a></p>
+            <p><a href="../ProjectSourceCode/Calculus-2/Sheep.jpg" download="Sheep.jpg">Download test image...</a></p>
 
 
-            
+<h3>Python Code Implementation with bilinear interpolation:</h3>
+    
+<p>To implement interpolation for enhancing the output quality of the rotated color image, we add the bilinear interpolation steps:</p>
+
+<p>Identify Neighboring Pixels: For each new pixel position \( (new\_x, new\_y) \), identify its four nearest neighbors in the original image.</p>
+
+<p>Calculate Weights: Compute the distances of \( (new\_x, new\_y) \) to these neighbors and use these distances to calculate weights for interpolation.</p>
+
+<p>Compute Interpolated Value: Use the weights to compute a weighted average of the neighbors' values.</p>
+
+<p>Let's break down the approach to identifying neighbors. We use the \( (x,y) \) point of the original image and calculate the top-left and bottom-right neighbors. We round down the x and y coordinates to the nearest integer for the top-left. That is why you see int(x) and int(y) in the code.</p>
+
+<p>To find the coordinates of the bottom-right neighbor, we move one pixel to the right and one pixel down from the top-left neighbor, and we achieve that by adding 1 to x1 and y1. Since we can go outside the bounds of the original image, we use \( \text{min}(x1 + 1, \text{width} - 1) \) and \( \text{min}(y1 + 1, \text{height} - 1) \).</p>
+
+<p>The x1, y1, x2, and y2 values represent the four nearest integer coordinates of 4 pixels in the original image surrounding the non-integer coordinate position \( (x, y) \) mapped from the rotated image. We use them in the bilinear interpolation to estimate the color value for the pixel in the rotated image. That is, we end up with:</p>
+<p>Top-left pixel \( (x1,y1) \)</p>
+<p>Top-right pixel \( (x2, y1) \)</p>
+<p>Bottom-left pixel \( (x1, y2) \)</p>
+<p>Bottom-right pixel \( (x2, y2) \)</p>
+
+<p>We combine the color values of these four pixels in a weighted manner to estimate the color value for the new position \( (x, y) \) in the original image, which corresponds to a specific pixel in the rotated image.</p>
+
+<p>We base the weights on the proximity of the floating-point position \( (x, y) \) to each of these four pixels. The closer this position is to a particular pixel, the more influence that pixel's color value will have in the linear interpolation.</p>
+
+<p>Notice the value we return:</p> 
+<pre class="code-block"><code>np.clip(interpolated_value, 0, 255)</code></pre>
+
+<p>We use it to ensure that the interpolated pixel values stay within a valid range for an 8-bit color image. Any interpolated color value below 0 will become 0 (pure black), and any value above 255 will become 255 (pure white).</p>
+
+            <pre class="code-block"><code>
+
+import cv2
+import numpy as np
+import math
+
+def bilinear_interpolate(image, x, y):
+    # Grab the dimensions of the image
+    height, width, _ = image.shape
+
+    # Calculate the coordinates of the four neighbors
+    x1, y1 = int(x), int(y)
+    x2, y2 = min(x1 + 1, width - 1), min(y1 + 1, height - 1)
+
+    # Calculate the differences from the original coordinates
+    dx, dy = x - x1, y - y1
+
+    # Get pixel values of four neighbors
+    q11 = image[y1, x1]
+    q21 = image[y1, x2]
+    q12 = image[y2, x1]
+    q22 = image[y2, x2]
+
+    # Perform the interpolation
+    b1 = q11 * (1 - dx) + q21 * dx
+    b2 = q12 * (1 - dx) + q22 * dx
+    interpolated_value = b1 * (1 - dy) + b2 * dy
+
+    return np.clip(interpolated_value, 0, 255)
+
+def rotate_image_color(image_path, angle):
+    # Load the color image
+    image = cv2.imread(image_path, cv2.IMREAD_COLOR)
+    height, width = image.shape[:2]
+
+    # Create a new image with the same size but filled with zeros (black background)
+    rotated_image = np.zeros((height, width, 3), np.uint8)
+
+    # Calculate the center of the image
+    center_y, center_x = height // 2, width // 2
+
+    # Convert the angle to radians
+    angle_rad = math.radians(angle)
+
+    # Create the rotation matrix
+    rotation_matrix = np.array([
+        [math.cos(angle_rad), -math.sin(angle_rad)],
+        [math.sin(angle_rad), math.cos(angle_rad)]
+    ])
+
+    # Apply the transformation to each pixel
+    for y in range(height):
+        for x in range(width):
+            # Translate the pixel to origin and then rotate
+            yp = y - center_y
+            xp = x - center_x
+            new_x, new_y = np.matmul(rotation_matrix, np.array([xp, yp]))
+
+            # Translate back from the origin
+            new_x += center_x
+            new_y += center_y
+
+            # Perform bilinear interpolation
+            if 0 <= new_x < width and 0 <= new_y < height:
+                rotated_image[y, x] = bilinear_interpolate(image, new_x, new_y)
+
+    # Display the original and rotated images
+    cv2.imshow('Original Image', image)
+    cv2.imshow('Rotated Image', rotated_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+# Use the function
+rotate_image_color('Sheep.jpg', -45)  # Replace with your image path and desired rotation angle
 
 
-            
+            </code></pre>
+
+            <div class="image-container">
+               <img src="../ProjectSourceCode/Calculus-2/SheepColorBilinear.jpg" alt="SheepColorBilinear" class="image">
+            </div>
+            <p><a href="../ProjectSourceCode/Calculus-2/Linear_Transformation_2D_Rotation_color_bilinear.py" download="Linear_Transformation_2D_Rotation_color_bilinear.py">Download Python Source Code...</a></p>
+            <p><a href="../ProjectSourceCode/Calculus-2/Sheep.jpg" download="Sheep.jpg">Download test image...</a></p>
 
 
             <h3>References</h3>

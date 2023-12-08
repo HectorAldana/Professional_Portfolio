@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const projects = [
         { name: "Matrices & Linear Systems - 2D Rotation", description: "Linear Transformation in R2 space with grayscale imagery.", slug: "Calculus-1" },
-        { name: "Matrices & Linear Systems - 2D Rotation", description: "Linear Transformation in R2 space with color imagery." , slug: "Calculus-2" },
+        { name: "Matrices & Linear Systems - 2D Rotation", description: "Linear Transformation in R2 space with color imagery and bilinear interpolation." , slug: "Calculus-2" },
         { name: "Matrices & Linear Systems - Eigenvalue Problem", description: "Application in facial recognition.", slug: "Calculus-3"  },
         { name: "Matrix Eigenvalue Problem", description: "High dimensional dataset & dimensionality reduction with Principal Component Analysis.", slug: "Calculus-4"  },
         { name: "Vector Differential Calculus - Gradient Descent", description: "Minimizing a cost function in a linear regression model.", slug: "Calculus-5"  },
