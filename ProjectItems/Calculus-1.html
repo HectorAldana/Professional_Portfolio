@@ -24,6 +24,41 @@
             <h3>Concept and Implementation</h3>
             <h4>Theory:</h4>
             <p>The project is centered around the rotation matrix, a linear transformation used for rotating vectors in a plane. Defined using sine (\(\sin\)) and cosine (\(\cos\)) functions, the matrix is pivotal for determining new coordinates after rotation, where \(\theta\) is the rotation angle. The simplicity of linear transformations is explored using grayscale images, which are 2D arrays of pixel intensities, in contrast to the more complex approach required for color images with multiple layers.</p>
+            <p><strong>Rotation Matrix Derivation:</strong></p>
+            <p>In the case of a circle of radius \( r \), any point on the circle can be described using the equations:</p>
+            <p>\[ x = r \cos(\alpha) \]</p>
+            <p>\[ y = r \sin(\alpha) \]</p>
+            <p>where \( \alpha \) is the angle from the positive x-axis to the point. After rotating this point by an angle \( \theta \), the new coordinates (\( x' \), \( y' \)) can be expressed using the rotation matrix:</p>
+            <p>\[ x' = x \cos(\theta) - y \sin(\theta) \]</p>
+            <p>\[ y' = x \sin(\theta) + y \cos(\theta) \]</p>
+            <p><strong>Matrix Formulation:</strong></p>
+            <p>The rotation matrix in 2D space for a rotation by an angle \( \theta \) is given by:</p>
+            <p>\[ 
+               \begin{bmatrix}
+               \cos(\theta) & -\sin(\theta) \\
+               \sin(\theta) & \cos(\theta)
+               \end{bmatrix}
+               \]
+            </p>
+            <p><strong>Cosine and Sine in the Matrix:</strong></p>
+            <p>The cosine and sine functions in the rotation matrix correspond to the rotated coordinates on the unit circle. They determine the new x and y coordinates of a point after a rotation transformation:</p>
+            <p>\[ 
+               \begin{bmatrix}
+               \cos(\theta) & -\sin(\theta) \\
+               \sin(\theta) & \cos(\theta)
+               \end{bmatrix}
+               \begin{bmatrix}
+               x \\
+               y
+               \end{bmatrix}
+               =
+               \begin{bmatrix}
+               x' \\
+               y'
+               \end{bmatrix}
+               \]
+            </p>
+            <p>This matrix will rotate a point (\( x, y \)) around the origin by the angle \( \theta \).</p>
             <h4>Tools:</h4>
             <p>The project utilizes Python for its powerful library support. OpenCV (cv2) is employed for image processing tasks, though the project specifically focuses on manually applying the rotation matrix to demonstrate the application of linear algebra in image manipulation. This approach offers a deeper understanding of the fundamental processes behind image rotation.</p>
             <h4>Process:</h4>
