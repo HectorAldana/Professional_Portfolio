@@ -89,54 +89,62 @@
             <p>Thus, rotation is indeed a linear transformation in \( \mathbb{R}^2 \) space, as it maps vectors from \( \mathbb{R}^2 \) to \( \mathbb{R}^2 \) while preserving linearity.</p>
             <h3>Python Code Implementation:</h3>
             <pre class="code-block"><code>
-<span class="keyword">import</span> cv2
-<span class="keyword">import</span> numpy <span class="keyword">as</span> np
-<span class="keyword">import</span> math
 
-<span class="keyword">def</span> rotate_image_manual(image_path, angle):
-    <span class="comment"># Load the image</span>
-    image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)  <span class="comment"># Load as grayscale for simplicity</span>
+<span class="keyword">import</span> cv2
+<span class="keyword">import</span> numpy as np
+<span class="keyword">import</span> math
+<span class="keyword">import</span> itertools as it
+
+<span class="keyword">def</span> rotation(image_file, angle_deg):
+    <span class="comment"># Load the image in grayscale and store its shape.</span>
+    image = cv2.imread(image_file, cv2.IMREAD_GRAYSCALE)
     height, width = image.shape
 
-    <span class="comment"># Create a new image with the same size but filled with zeros (black)</span>
+    <span class="comment"># Generate the output image initialized with zeroes (black color).</span> 
     rotated_image = np.zeros((height, width), dtype=np.uint8)
 
-    <span class="comment"># Calculate the center of the image</span>
-    center_y, center_x = height <span class="keyword">//</span> 2, width <span class="keyword">//</span> 2
+    <span class="comment"># Determine the vertical and horizontal midpoints.</span>
+    center_y, center_x = height // 2, width // 2
 
-    <span class="comment"># Convert the angle to radians</span>
-    angle_rad = math.radians(angle)
+    <span class="comment"># Python uses radians as the standard unit of angular measurement.</span>
+    <span class="comment"># Hence, convert the angle to radians.</span>
+    angle_rad = math.radians(angle_deg)
 
-    <span class="comment"># Create the rotation matrix</span>
+    <span class="comment"># Use the angle to compute the standard rotation matrix.</span>
     rotation_matrix = np.array([
         [math.cos(angle_rad), -math.sin(angle_rad)],
         [math.sin(angle_rad), math.cos(angle_rad)]
     ])
 
-    <span class="comment"># Apply the transformation to each pixel</span>
-    <span class="keyword">for</span> y <span class="keyword">in</span> range(height):
-        <span class="keyword">for</span> x <span class="keyword">in</span> range(width):
-            <span class="comment"># Translate the pixel to origin and then rotate</span>
-            yp = y - center_y
-            xp = x - center_x
-            new_x, new_y = np.matmul(rotation_matrix, np.array([xp, yp]))
+    <span class="comment"># Apply the transformation to each pixel.</span>
+    <span class="keyword">for</span> x, y in it.product(range(width), range(height)):
+            <span class="comment"># We want to rotate about the origin.</span>
+            <span class="comment"># Therefore, we shift the image (translate it) so that its center (pivot) aligns with the origin of the coordinate system.</span> 
+            rotated_x, rotated_y = np.matmul(rotation_matrix, np.array([x - center_x, y - center_y]))
 
-            <span class="comment"># Translate back from the origin</span>
-            new_x += center_x
-            new_y += center_y
+            <span class="comment"># Translate back from the origin to prevent image misalignment with its original frame.</span>
+            rotated_x += center_x
+            rotated_y += center_y
 
-            <span class="comment"># If the new position is within the bounds of the image, set the pixel</span>
-            <span class="keyword">if</span> 0 <= new_x < width <span class="keyword">and</span> 0 <= new_y < height:
-                rotated_image[int(new_y), int(new_x)] = image[y, x]
+            <span class="comment"># If the rotated position is within the bounds of the image, set the pixel.</span>
+            is_x_valid = 0 <= rotated_x < width
+            is_y_valid = 0 <= rotated_y < height
+            <span class="keyword">if</span> is_x_valid and is_y_valid:
+                rotated_image[int(rotated_y), int(rotated_x)] = image[y, x]
 
-    <span class="comment"># Display the original and rotated images</span>
-    cv2.imshow('Original Image', image)
-    cv2.imshow('Rotated Image', rotated_image)
+    <span class="comment"># Display both original and rotated images.</span>
+    cv2.imshow('Original', image)
+    cv2.imshow('Rotated', rotated_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-<span class="comment"># Use the function</span>
-rotate_image_manual('path_to_your_image.jpg', -45)  <span class="comment"># Replace with your image path and desired rotation angle</span>
+    
+<span class="comment"># Call to the rotation function</span>
+rotation(image_file='test_image.png', angle_deg=-45)  
+
+
+
+
 </code></pre>
             <div class="image-container">
                <img src="../ProjectSourceCode/Calculus-1/Sheep.jpg" alt="Sheep" class="image">
@@ -154,18 +162,12 @@ rotate_image_manual('path_to_your_image.jpg', -45)  <span class="comment"># Repl
 pip install numpy --upgrade
 </code></pre>
             <h4>File path issue:</h4>
-            <p>Solution: In Jupyter.Notebook, run the following command: </p>
+            <p>Solution: In Jupyter.Notebook, copy the image to the C:\temp directory and run the following code: </p>
             <pre class="code-block"><code>            
+<span class="comment"># Set the working directory</span>
 import os
-
-<span class="comment"># Define the desired directory path</span>
-new_directory = "C:\path_to_your_image"
-
-<span class="comment"># Change the current working directory</span>
-os.chdir(new_directory)
-
-<span class="comment"># Verify the change</span>
-print("Current Working Directory: ", os.getcwd())
+os.chdir(r"C:\temp")
+print("Working Directory: ", os.getcwd())
 
 </code></pre>
             <h3>Results and Discussion</h3>
@@ -175,21 +177,80 @@ print("Current Working Directory: ", os.getcwd())
             <h5>Clipped image:</h5>
             <p>The code can be enhanced by calculating the new image size</p>
             <pre class="code-block"><code>            
-    <span class="comment"># Calculate new image width and height</span>
+
+
+
+<span class="keyword">import</span> cv2
+<span class="keyword">import</span> numpy as np
+<span class="keyword">import</span> math
+<span class="keyword">import</span> itertools as it
+
+<span class="keyword">def</span> rotation(image_file, angle_deg):
+    <span class="comment"># Load the image in grayscale and store its shape.</span>
+    image = cv2.imread(image_file, cv2.IMREAD_GRAYSCALE)
+    height, width = image.shape
+    
+    <span class="comment"># Python uses radians as the standard unit of angular measurement.</span>
+    <span class="comment"># Hence, convert the angle to radians.</span>
+    angle_rad = math.radians(angle_deg)
+    
+    
+    
+    <span class="keyword"># Calculate new image width and height.</span>
     new_width = int(abs(width * math.cos(angle_rad)) + abs(height * math.sin(angle_rad)))
     new_height = int(abs(height * math.cos(angle_rad)) + abs(width * math.sin(angle_rad)))
 
-    <span class="comment"># Create a new image with the calculated size</span>
-    rotated_image = np.zeros((new_height, new_width), dtype=np.uint8)
+    <span class="keyword"># Create a new image with the calculated size.</span>
+    rotated_image = np.zeros((new_height, new_width), dtype=np.uint8)   
 
-    <span class="comment"># Calculate the center of the new image</span>
-    center_y, center_x = new_height // 2, new_width // 2
+    <span class="keyword"># Determine the vertical and horizontal midpoints.</span>
+    center_y, center_x = height // 2, width // 2
+    new_center_y, new_center_x = new_height // 2, new_width // 2
+
+    
+
+    <span class="comment"># Use the angle to compute the standard rotation matrix.</span>
+    rotation_matrix = np.array([
+        [math.cos(angle_rad), -math.sin(angle_rad)],
+        [math.sin(angle_rad), math.cos(angle_rad)]
+    ])
+
+    <span class="comment"># Apply the transformation to each pixel.</span>
+    <span class="keyword">for</span> x, y in it.product(range(width), range(height)):
+            <span class="comment"># We want to rotate about the origin.</span>
+            <span class="comment"># Therefore, we shift the image (translate it) so that its center (pivot) aligns with the origin of the coordinate system.</span>
+            rotated_x, rotated_y = np.matmul(rotation_matrix, np.array([x - center_x, y - center_y]))
+
+            <span class="comment"># Translate back from the origin to prevent image misalignment with its original frame.</span>
+            rotated_x += new_center_x
+            rotated_y += new_center_y
+
+            <span class="comment"># If the rotated position is within the bounds of the image, set the pixel.</span>
+            is_x_valid = 0 <= rotated_x < new_width
+            is_y_valid = 0 <= rotated_y < new_height
+            if is_x_valid and is_y_valid:
+                rotated_image[int(rotated_y), int(rotated_x)] = image[y, x]
+
+    <span class="comment"># Display both original and rotated images.</span>
+    cv2.imshow('Original', image)
+    cv2.imshow('Rotated', rotated_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+    
+<span class="comment"># Call to the rotation function.</span>
+rotation(image_file='test_image.png', angle_deg=-45)  
+
+
+
+
+
 
 </code></pre>
             <div class="image-container">
                <img src="../ProjectSourceCode/Calculus-1/Sheep.jpg" alt="Sheep" class="image">
                <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale.png" alt="Sheep in Grayscale" class="image">
-               <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale-counterclockwise-45degrees.png" alt="Sheep Rotated 45 Degrees Counterclockwise" class="image">
+               <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale-counterclockwise-45degrees-notclipped.png" alt="Sheep Rotated 45 Degrees Counterclockwise" class="image">
                <img src="../ProjectSourceCode/Calculus-1/Sheep-grayscale-counterclockwise-90degrees.png" alt="Sheep Rotated 45 Degrees Counterclockwise" class="image">
             </div>
             <h4>Analysis:</h4>
@@ -233,6 +294,8 @@ def rotate_image(image_path, angle):
 rotate_image('path_to_your_image.jpg', 45)  # Replace 'path_to_your_image.jpg' with your image file path
 
 </code></pre>
+<h6><p style="color: rgb(211, 211, 211);">Credit: The latter OpenCV code is AI generated(ChatGPT). Check the mini-project "Linear Transformation in R2 space with color imagery and bilinear interpolation." for the manual code.</p></h6>
+
             <div class="image-container">
                <img src="../ProjectSourceCode/Calculus-1/OpenCV-45.png" alt="OpenCV&Numpy -45 degress" class="image">
                <img src="../ProjectSourceCode/Calculus-1/OpenCV-90.png" alt="OpenCV&Numpy -90 degress" class="image">
